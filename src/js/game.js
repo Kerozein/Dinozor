@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import Desert from "./ui/Desert";
 import Sky from "./ui/Sky";
 import { GUI } from 'dat.gui'
+import Player from "./ui/Player";
+import {TWEEN} from "three/examples/jsm/libs/tween.module.min";
 
 export default class Game{
     scene;
@@ -14,9 +16,9 @@ export default class Game{
     constructor() {
         this.createScene();
         this.createLights();
-        //createPlane();
         this.createDesert();
         this.createSky();
+        this.createPlayer();
         //loop();
         requestAnimationFrame(()=>this.render());
     }
@@ -54,6 +56,7 @@ export default class Game{
         this.createDebugMenu();
 
         window.addEventListener('resize', this.handleWindowResize, false);
+        window.addEventListener('keyup', (e)=>{ if(e.key === " ") this.player.jump()});
     }
 
     handleWindowResize() {
@@ -113,9 +116,16 @@ export default class Game{
         requestAnimationFrame(()=>this.render());
         this.sky.moveClouds();
         this.desert.animate();
+        this.player.run();
         this.renderer.render(this.scene, this.camera);
+        TWEEN.update();
     }
 
+    createPlayer() {
+        this.player = new Player();
+        console.log(this.player)
+        this.scene.add(this.player);
+    }
 }
 
 

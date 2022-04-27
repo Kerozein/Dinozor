@@ -8,8 +8,6 @@ export default class Desert extends THREE.Object3D{
         geom.applyMatrix4(new THREE.Matrix4().makeRotationX(-Math.PI/2));
         let mat = new THREE.MeshPhongMaterial({
             color:0xf7d9aa,
-            transparent:false,
-            opacity:.6,
             flatShading:true,
         });
         let base = new THREE.Mesh(geom,mat);
@@ -27,7 +25,7 @@ export default class Desert extends THREE.Object3D{
             c.position.y = Math.sin(a)*h;
             c.position.x = Math.cos(a)*h;
             c.rotation.z = a + Math.PI/2;
-            c.position.z = -250-Math.random()*100;
+            c.position.z = -250;
 
             let s = 1+Math.random()*2;
             c.scale.set(s,s,s);
