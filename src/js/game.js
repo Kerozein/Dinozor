@@ -1,11 +1,14 @@
 import * as THREE from 'three';
-import Sea from "./ui/Sea";
+import Desert from "./ui/Desert";
 import Sky from "./ui/Sky";
+import { GUI } from 'dat.gui'
 
 export default class Game{
     scene;
     camera;
     renderer;
+    debug;
+    sky;
 
     constructor() {
         this.createScene();
@@ -14,10 +17,10 @@ export default class Game{
         this.createSea();
         this.createSky();
         //loop();
+        requestAnimationFrame(()=>this.render());
         console.log(this.scene)
         console.log(this.camera)
     }
-
 
     createScene(){
         let HEIGHT = window.innerHeight;
@@ -38,11 +41,9 @@ export default class Game{
             farPlane
         );
 
-
         this.camera.position.x = 0;
         this.camera.position.z = 200;
         this.camera.position.y = 100;
-        this.camera.lookAt(new THREE.Vector3(0, 400, 0));
 
         this.renderer = new THREE.WebGLRenderer({alpha:true, antialias: true});
         this.renderer.setSize(WIDTH, HEIGHT);
@@ -50,6 +51,8 @@ export default class Game{
 
         let container = document.getElementById('world');
         container.appendChild(this.renderer.domElement);
+
+        this.createDebugMenu();
 
         window.addEventListener('resize', this.handleWindowResize, false);
     }
@@ -82,14 +85,10 @@ export default class Game{
 
         this.scene.add(hemisphereLight);
         this.scene.add(shadowLight);
-
-        let ch = new THREE.CameraHelper(shadowLight.shadow.camera);
-
-        this.scene.add(ch);
     }
 
     createSea(){
-        let sea = new Sea();
+        let sea = new Desert();
         sea.position.y = -600;
         this.scene.add(sea);
     }
@@ -98,7 +97,24 @@ export default class Game{
         let sky = new Sky();
         sky.position.y = -600;
         this.scene.add(sky);
+        this.sky = sky;
     }
+
+    createDebugMenu(){
+        this.debug = new GUI();
+        let cameraFolder = this.debug.addFolder('Camera');
+        cameraFolder.add( this.camera.position, 'x', -100, 100, 0.01 ).name('X-axis');
+        cameraFolder.add( this.camera.position, 'y', -100, 100, 0.01 ).name('Y-axis');
+        cameraFolder.add( this.camera.position, 'z', -100, 100, 0.01 ).name('Z-axis');
+
+    }
+
+    render(){
+        requestAnimationFrame(()=>this.render());
+        this.sky.moveClouds();
+        this.renderer.render(this.scene, this.camera);
+    }
+
 }
 
 

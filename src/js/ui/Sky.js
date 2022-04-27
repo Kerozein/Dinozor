@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import Cloud from "./Cloud";
 
 export default class Sky extends THREE.Object3D{
+    clouds = [];
     constructor() {
         super();
         let numberOfClouds = 20;
@@ -22,6 +23,14 @@ export default class Sky extends THREE.Object3D{
             let s = 1+Math.random()*2;
             c.scale.set(s,s,s);
             this.add(c);
+            this.clouds.push(c);
         }
+    }
+
+    moveClouds(){
+        this.clouds.forEach((c)=>{
+            c.rotate();
+        })
+        this.rotation.z += 0.0002;
     }
 }
