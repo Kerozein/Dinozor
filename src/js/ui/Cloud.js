@@ -35,7 +35,6 @@ export default class Cloud extends THREE.Object3D{
     }
 
     rotate(){
-        console.log(this)
         this.children.forEach((m)=>{
             m.rotation.z+= Math.random()*.005;
             m.rotation.y+= Math.random()*.002;

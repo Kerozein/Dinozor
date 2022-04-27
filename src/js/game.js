@@ -9,17 +9,16 @@ export default class Game{
     renderer;
     debug;
     sky;
+    desert;
 
     constructor() {
         this.createScene();
         this.createLights();
         //createPlane();
-        this.createSea();
+        this.createDesert();
         this.createSky();
         //loop();
         requestAnimationFrame(()=>this.render());
-        console.log(this.scene)
-        console.log(this.camera)
     }
 
     createScene(){
@@ -87,17 +86,18 @@ export default class Game{
         this.scene.add(shadowLight);
     }
 
-    createSea(){
-        let sea = new Desert();
-        sea.position.y = -600;
-        this.scene.add(sea);
+    createDesert(){
+        this.desert = new Desert();
+        this.desert.position.y = -600;
+        this.desert.addCactus();
+        this.scene.add(this.desert);
+
     }
 
     createSky(){
-        let sky = new Sky();
-        sky.position.y = -600;
-        this.scene.add(sky);
-        this.sky = sky;
+        this.sky = new Sky();
+        this.sky.position.y = -600;
+        this.scene.add(this.sky);
     }
 
     createDebugMenu(){
@@ -112,6 +112,7 @@ export default class Game{
     render(){
         requestAnimationFrame(()=>this.render());
         this.sky.moveClouds();
+        this.desert.animate();
         this.renderer.render(this.scene, this.camera);
     }
 

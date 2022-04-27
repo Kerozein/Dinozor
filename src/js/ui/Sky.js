@@ -31,6 +31,6 @@ export default class Sky extends THREE.Object3D{
         this.clouds.forEach((c)=>{
             c.rotate();
         })
-        this.rotation.z += 0.0002;
+        this.rotation.z += 0.0001;
     }
 }
